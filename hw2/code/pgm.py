@@ -26,7 +26,7 @@ def dataProcess_X(rawData):
     ObjectData = Data[listObjectColumn] # 非数字的数据
     NonObjectData = Data[listNonObjedtColumn] # 数字的数据
 
-    # 添加性别，female = 0, male = 1
+    # 添加性别，female = 1, male = 0
     NonObjectData.insert(0, "sex", (rawData["sex"] == " Female").astype(np.int))
 
     # 非数字的属性变为独热编码
@@ -39,11 +39,17 @@ def dataProcess_X(rawData):
     Data_x = (Data_x - Data_x.mean()) / Data_x.std()
 
     return Data_x
-    
+
+
+def dataProcess_Y(rawData):
+    df_y = rawData['income']
+    Data_y = pd.DataFrame((df_y == ' >50K').astype("int64"), columns=['income'])
+
+    return Data_y
     
 
 
 if __name__ == "__main__":
     trainData = pd.read_csv("../data/train.csv")
-    print(trainData)
-    dataProcess_X(trainData)
+    testData = pd.read_csv("../data/test.csv")
+    ans = pd.read_csv("../data/sample_submission.csv")
